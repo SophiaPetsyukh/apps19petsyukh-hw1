@@ -1,52 +1,149 @@
 package ua.edu.ucu.tempseries;
 
+import java.util.Arrays;
+import java.util.InputMismatchException;
+
 public class TemperatureSeriesAnalysis {
-
+    private double[] temperatures;
     public TemperatureSeriesAnalysis() {
-
     }
-
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
-
+        this.temperatures = Arrays.copyOf(temperatureSeries, temperatureSeries.length);
+        for (double t: temperatures) {
+            if (t < -273.0) {
+                throw new InputMismatchException();
+            }
+        }
+    }
+    //public double[] grtArr()
+    private void check() {
+        if (temperatures.length == 0){
+            throw new IllegalArgumentException();
+        }
     }
 
     public double average() {
-        return -1;
+        check();
+        int sum = 0;
+        for (double t: temperatures){
+            sum += t;
+        }
+        return sum / temperatures.length;
     }
 
     public double deviation() {
-        return 0;
+        check();
+        double averageTemp = this.average();
+        double dev = 0;
+        for (double t: temperatures) {
+            dev += (t - averageTemp) * (t - averageTemp);
+        }
+        return Math.sqrt(dev / temperatures.length);
     }
 
     public double min() {
-        return 0;
+        check();
+        double curMin = temperatures[0];
+        for (double t: temperatures) {
+            if (t < curMin) {
+                curMin = t;
+            }
+        }
+        return curMin;
     }
 
     public double max() {
-        return 0;
+        check();
+        double curMax = temperatures[0];
+        for (double t: temperatures) {
+            if (t > curMax) {
+                curMax = t;
+            }
+        }
+        return curMax;
     }
 
     public double findTempClosestToZero() {
-        return 0;
+        return findTempClosestToValue(0);
     }
 
     public double findTempClosestToValue(double tempValue) {
-        return 0;
+        check();
+        double closest = temperatures[0] - tempValue;
+        for (double t: temperatures) {
+            if (Math.abs(closest) > Math.abs(t - tempValue)) {
+                closest = t - tempValue;
+            }
+        }
+        return closest;
     }
 
     public double[] findTempsLessThen(double tempValue) {
-        return null;
+        check();
+        int newLength = 0;
+        for (double t: temperatures) {
+            if (t < tempValue) {
+                newLength += 1;
+            }
+        }
+
+        double[] result = new double[newLength];
+        int i = 0;
+        for (double t: temperatures) {
+            if (t < tempValue) {
+                result[i] = t;
+                i += 1;
+            }
+        }
+        return result;
     }
 
     public double[] findTempsGreaterThen(double tempValue) {
-        return null;
+        check();
+        int newLength = 0;
+        for (double t: temperatures) {
+            if (t >= tempValue) {
+                newLength += 1;
+            }
+        }
+        double[] result = new double[newLength];
+        int i = 0;
+        for (double t: temperatures) {
+            if (t >= tempValue) {
+                result[i] = t;
+                i += 1;
+            }
+        }
+        return result;
     }
 
     public TempSummaryStatistics summaryStatistics() {
-        return null;
+        check();
+        return new TempSummaryStatistics(average(), deviation(), min(), max());
     }
 
     public int addTemps(double... temps) {
-        return 0;
+        check();
+        for (double t : temps) {
+            if (t < -273.0) {
+                throw new InputMismatchException();
+            }
+        }
+        double[] result;
+        int len = temps.length;
+        result = new double[temperatures.length * 2];
+        int i = 0;
+        int totalSum = 0;
+        for (double t: temperatures) {
+            result[i] = t;
+            totalSum += t;
+            i++;
+        }
+        for (double t: temps) {
+            result[i] = t;
+            totalSum += t;
+            i++;
+        }
+        return totalSum;
     }
 }
