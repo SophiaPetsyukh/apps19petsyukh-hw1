@@ -71,7 +71,7 @@ public class TemperatureSeriesAnalysisTest {
 
         double actualResult = seriesAnalysis.deviation();
 
-        assertEquals(expResult, actualResult, 0.01);
+        assertEquals(expResult, actualResult, 0.00001);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class TemperatureSeriesAnalysisTest {
 
         double actualResult = seriesAnalysis.min();
 
-        assertEquals(expResult, actualResult, 0.00000001);
+        assertEquals(expResult, actualResult, 0.00001);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class TemperatureSeriesAnalysisTest {
         double expResult = 5.0;
         double actualResult = seriesAnalysis.max();
 
-        assertEquals(expResult, actualResult, 0.00000001);
+        assertEquals(expResult, actualResult, 0.00001);
     }
 
     @Test
@@ -135,7 +135,7 @@ public class TemperatureSeriesAnalysisTest {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
         double expResult = 1.0;
         double actualResult = seriesAnalysis.findTempClosestToZero();
-        assertEquals(expResult, actualResult, 0.001);
+        assertEquals(expResult, actualResult, 0.00001);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -215,9 +215,38 @@ public class TemperatureSeriesAnalysisTest {
         assertEquals(Arrays.equals(expResult, actualResult), true);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testSummaryStatisticsWithEmptyArray() {
+        double[] temperatureSeries = {};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+        seriesAnalysis.summaryStatistics();
+    }
+
     @Test
-    public void testAddTempsWithOneElementArray() {
-        double[] temperatureSeries = {5.0};
+    public void testSummaryStatistics() {
+        double[] temperatureSeries = {-5.0, 16.0, 10.0, -1.0};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+        TempSummaryStatistics result = seriesAnalysis.summaryStatistics();
+        double expAverage = 5.0;
+        double expDeviation = 8.39643;
+        double expMax = 16.0;
+        double expMin = -5.0;
+
+        double actualAverage = result.getAvgTemp();
+        double actualDeviation = result.getDevTemp();
+        double actualMax = result.getMaxTemp();
+        double actualMin = result.getMinTemp();
+
+        assertEquals(expAverage, actualAverage, 0.00001);
+        assertEquals(expDeviation, actualDeviation, 0.00001);
+        assertEquals(expMax, actualMax, 0.00001);
+        assertEquals(expMin, actualMin, 0.00001);
+
+    }
+
+    @Test
+    public void testAddTempsWithFreeSpace() {
+        double[] temperatureSeries = {5.0, 0.0, 0.0, 0.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
         double expResult = 19.0;
         int actualResult = seriesAnalysis.addTemps(10.0, 1.0, 3.0);
@@ -226,9 +255,9 @@ public class TemperatureSeriesAnalysisTest {
 
     @Test
     public void testAddTemps() {
-        double[] temperatureSeries = {5.0, 1.0};
+        double[] temperatureSeries = {5.0, 1.0, 4.5, 2.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        double expResult = 20.0;
+        double expResult = 26.5;
         int actualResult = seriesAnalysis.addTemps(10.0, 1.0, 3.0);
         assertEquals(expResult, actualResult, 0.00001);
     }

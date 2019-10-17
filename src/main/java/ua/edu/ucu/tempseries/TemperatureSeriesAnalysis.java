@@ -66,16 +66,16 @@ public class TemperatureSeriesAnalysis {
         }
         return curMax;
     }
-
+//30 -5 10 1
     public double findTempClosestToZero() {
         return findTempClosestToValue(0);
     }
 
     public double findTempClosestToValue(double tempValue) {
         check();
-        double closest = temperatures[0] - tempValue;
+        double closest = Double.MAX_VALUE;
         for (double t: temperatures) {
-            if (Math.abs(closest) >= Math.abs(t - tempValue)) {
+            if (Math.abs(closest) > Math.abs(t - tempValue)) {
                 closest = t;
             }
         }
@@ -130,14 +130,14 @@ public class TemperatureSeriesAnalysis {
 
     public int addTemps(double... temps) {
         check();
-        int len1 = temps.length;
-        int len2 = temperatures.length;
+        int lenAdd = temps.length;
+        int lenT = temperatures.length;
         double[] result;
-        if (temperatures[len2 - len1] != 0.0) {
-            result = new double[len2 * 2];
+        if (temperatures[lenT - lenAdd] != 0.0) {
+            result = new double[lenT * 2];
         }
         else {
-            result = new double[len2];
+            result = new double[lenT];
         }
         int i = 0;
         int totalSum = 0;
