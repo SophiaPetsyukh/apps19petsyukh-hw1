@@ -8,6 +8,17 @@ import java.util.InputMismatchException;
 
 public class TemperatureSeriesAnalysisTest {
 
+    @Test(expected = InputMismatchException.class)
+    public void testTemperatureSeriesAnalysisIncorrectInput() {
+        double[] temperatureSeries = {5.0, 9.0, -350.0, -15.0};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+    }
+
+    @Test
+    public void testTemperatureSeriesAnalysis() {
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis();
+    }
+
     @Test
     public void testAverageWithOneElementArray() {
         // setup input data and expected result
