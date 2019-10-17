@@ -174,8 +174,8 @@ public class TemperatureSeriesAnalysisTest {
     public void testFindTempClosestToValue() {
         double[] temperatureSeries = {30.0, -5.0, 10.0, 1.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        double expResult = -5.0;
-        double actualResult = seriesAnalysis.findTempClosestToValue(-3.0);
+        double expResult = 10.0;
+        double actualResult = seriesAnalysis.findTempClosestToValue(12.0);
         assertEquals(expResult, actualResult, 0.00001);
     }
 
@@ -255,9 +255,9 @@ public class TemperatureSeriesAnalysisTest {
 
     @Test
     public void testAddTemps() {
-        double[] temperatureSeries = {5.0, 1.0, 4.5, 2.0};
+        double[] temperatureSeries = {5.0, 1.0, 4.0, 2.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        double expResult = 26.5;
+        double expResult = 26.0;
         int actualResult = seriesAnalysis.addTemps(10.0, 1.0, 3.0);
         assertEquals(expResult, actualResult, 0.00001);
     }
