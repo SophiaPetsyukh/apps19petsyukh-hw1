@@ -75,8 +75,8 @@ public class TemperatureSeriesAnalysis {
         check();
         double closest = temperatures[0] - tempValue;
         for (double t: temperatures) {
-            if (Math.abs(closest) > Math.abs(t - tempValue)) {
-                closest = t - tempValue;
+            if (Math.abs(closest) >= Math.abs(t - tempValue)) {
+                closest = t;
             }
         }
         return closest;
@@ -126,16 +126,27 @@ public class TemperatureSeriesAnalysis {
         return new TempSummaryStatistics(average(), deviation(), min(), max());
     }
 
+
+
     public int addTemps(double... temps) {
         check();
+        int len1 = temps.length;
+        int len2 = temperatures.length;
         double[] result;
-        result = new double[temperatures.length * 2];
+        if (temperatures[len2 - len1] != 0.0) {
+            result = new double[len2 * 2];
+        }
+        else {
+            result = new double[len2];
+        }
         int i = 0;
         int totalSum = 0;
         for (double t: temperatures) {
-            result[i] = t;
-            totalSum += t;
-            i++;
+            if (t != 0.0) {
+                result[i] = t;
+                totalSum += t;
+                i++;
+            }
         }
         for (double t: temps) {
             result[i] = t;

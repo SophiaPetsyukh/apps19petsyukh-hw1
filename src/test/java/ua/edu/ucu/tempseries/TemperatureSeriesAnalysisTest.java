@@ -50,9 +50,9 @@ public class TemperatureSeriesAnalysisTest {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
         double expResult = 0.0;
 
-        double actualResult = seriesAnalysis.average();
+        double actualResult = seriesAnalysis.deviation();
 
-        assertEquals(expResult, actualResult, 0.0001);
+        assertEquals(expResult, actualResult, 0.00001);
     }
 
     @Test(expected = IllegalArgumentException.class)
