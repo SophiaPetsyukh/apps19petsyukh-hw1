@@ -8,16 +8,18 @@ public class TemperatureSeriesAnalysis {
     public TemperatureSeriesAnalysis() {
     }
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
-        this.temperatures = Arrays.copyOf(temperatureSeries, temperatureSeries.length);
+        final double MINTEMP = -273.0;
+        this.temperatures = Arrays.copyOf(temperatureSeries,
+                temperatureSeries.length);
         for (double t: temperatures) {
-            if (t < -273.0) {
+            if (t < MINTEMP) {
                 throw new InputMismatchException();
             }
         }
     }
     //public double[] grtArr()
     private void check() {
-        if (temperatures.length == 0){
+        if (temperatures.length == 0) {
             throw new IllegalArgumentException();
         }
     }
@@ -25,10 +27,12 @@ public class TemperatureSeriesAnalysis {
     public double average() {
         check();
         int sum = 0;
-        for (double t: temperatures){
+        int avg;
+        for (double t: temperatures) {
             sum += t;
         }
-        return sum / temperatures.length;
+        avg = sum / temperatures.length;
+        return avg;
     }
 
     public double deviation() {
@@ -124,13 +128,7 @@ public class TemperatureSeriesAnalysis {
 
     public int addTemps(double... temps) {
         check();
-        for (double t : temps) {
-            if (t < -273.0) {
-                throw new InputMismatchException();
-            }
-        }
         double[] result;
-        int len = temps.length;
         result = new double[temperatures.length * 2];
         int i = 0;
         int totalSum = 0;
@@ -144,6 +142,7 @@ public class TemperatureSeriesAnalysis {
             totalSum += t;
             i++;
         }
+        this.temperatures = result;
         return totalSum;
     }
 }
